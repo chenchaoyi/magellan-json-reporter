@@ -4,12 +4,10 @@ var Jsonfile = require('jsonfile');
 var Util = require('util');
 
 var START_TIME = (new Date()).toISOString();
-var JSONREPORT = './mocha_report.json';
 
-// FIXME: this should be handled better and perhaps fetched from the admiral module
 var settings = {
   verbose: false,
-  path: process.env.JSON_REPORT_PATH || JSONREPORT
+  path: process.env.JSON_REPORT_PATH || './mocha_report.json'
 };
 
 var Reporter = function () {
@@ -99,13 +97,13 @@ Reporter.prototype = {
     console.log("\n");
     console.log("============================ Report ============================");
     console.log("JSON report file is available at: ");
-    console.log("");
+    console.log(settings.path);
     console.log("================================================================");
     console.log("\n");
   },
 
   _writeJsonReport: function (data) {
-    Jsonfile.writeFileSync(JSONREPORT, data, { flag: 'w', spaces: 2 });
+    Jsonfile.writeFileSync(settings.path, data, { flag: 'w', spaces: 2 });
   }
 };
 
