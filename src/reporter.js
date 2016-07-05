@@ -1,7 +1,7 @@
 var BaseReporter = require('testarmada-magellan').Reporter;
+var Q = require('q');
 var _ = require('lodash');
 var Jsonfile = require('jsonfile');
-var Util = require('util');
 
 var START_TIME = (new Date()).toISOString();
 
@@ -11,27 +11,31 @@ var settings = {
 };
 
 var Reporter = function () {
-  // initialize reporting structure
-  this.tests = [];
-  this.pending = [];
-  this.passes = [];
-  this.failures = [];
-  this.suites = [];
-  this.stats = {
-    suites: 0,
-    tests: 0,
-    passes: 0,
-    pending: 0,
-    failures: 0,
-    start: START_TIME,
-    end: START_TIME,
-    duration: 0
-  };
 };
 
-Util.inherits(Reporter, BaseReporter);
-
 Reporter.prototype = {
+  initialize: function () {
+    this.tests = [];
+    this.pending = [];
+    this.passes = [];
+    this.failures = [];
+    this.suites = [];
+    this.stats = {
+      suites: 0,
+      tests: 0,
+      passes: 0,
+      pending: 0,
+      failures: 0,
+      start: START_TIME,
+      end: START_TIME,
+      duration: 0
+    };
+    var deferred = Q.defer();
+
+    deferred.resolve();
+    return deferred.promise;
+  },
+
   listenTo: function (testRun, test, source) {
     source.addListener('message', this._handleMessage.bind(this, testRun, test));
   },
