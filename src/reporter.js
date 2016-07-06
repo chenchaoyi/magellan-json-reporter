@@ -78,7 +78,11 @@ Reporter.prototype = {
     } else {
       this.stats.failures = this.stats.failures + 1;
       // record err message & stack trace into report
-      testObject.err = JSON.parse(test.stdout).failures[0].err;
+      try {
+        testObject.err = JSON.parse(test.stdout).failures[0].err;
+      } catch (err) {
+        testObject.err = 'Unknown error (test was killed?)'
+      }
       this.failures.push(testObject);
     }
   },
